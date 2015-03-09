@@ -49,7 +49,22 @@ foreach($arSectionsCatalog as $id => $SectionArray){//Заполнение
 }
 
 function SectionsTreeSort($sectionID){
+	global $arSectionsCatalog;
+	$resultArray = array();
+	if(is_array($arSectionsCatalog)){
+		foreach($arSectionsCatalog as $key => $catalog){
+			if($catalog['SECTION_ID'] == $sectionID){
+				$resultArray[$catalog['ID']] = $catalog;
+				$resultArray[$catalog['ID']]['SUBSECTIONS'] = SectionsTreeSort($catalog['ID']);
+			}
+		}
+	}
 
+	return $resultArray;
+}
+
+foreach($arResult['SECTION_CONTENT'] as $key => $section){
+	$section['SUBSECTIONS'] = SectionsTreeSort($section['ID']);
 }
 
 
